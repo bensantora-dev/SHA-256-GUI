@@ -1,0 +1,71 @@
+import { Button, LineEdit, TextEdit } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    width: 560px;
+    height: 480px;  // Increased height to accommodate TextEdit
+    background: #1e1e1e;
+    
+    in-out property <string> file-path;
+    in-out property <string> result;
+    in-out property <string> expected-hash;
+    
+    callback compute-hash();
+
+    VerticalLayout {
+        padding: 40px;
+        spacing: 20px;
+
+        Text {
+            text: "File path:";
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        LineEdit {
+            text <=> root.file-path;
+            font-size: 14px;
+            placeholder-text: "/path/to/file";
+        }
+
+        Text {
+            text: "Expected Hash (paste to verify):";
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        LineEdit {
+            text <=> root.expected-hash;
+            font-size: 14px;
+            placeholder-text: "Paste official hash here...";
+        }
+
+        Text {
+            text: "SHA-256 Result:";
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        TextEdit {
+            text <=> root.result;
+            font-size: 14px;
+            read-only: true;
+            height: 80px;
+        }
+
+        // Verification Status
+        Text {
+            visible: root.expected-hash != "" && root.result != "";
+            text: root.result == root.expected-hash ? "✅ MATCH" : "❌ MISMATCH";
+            color: root.result == root.expected-hash ? #00ff00 : #ff5555;
+            font-size: 24px;
+            horizontal-alignment: center;
+        }
+
+        Button {
+            text: "Compute";
+            clicked => {
+                root.compute-hash();
+            }
+        }
+    }
+}
