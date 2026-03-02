@@ -1,0 +1,5 @@
+# Force Rust detection
+*.rs linguist-language=Rust
+
+# If you have actual .slint UI files, keep them as Slint
+*.slint linguist-language=Slint
